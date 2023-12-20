@@ -1,15 +1,15 @@
 import { Component, inject, Signal } from '@angular/core';
-import { WeatherService } from '../services/weather.service';
-import { LocationService } from '../services/location.service';
+import { WeatherService } from '../../services/weather.service';
+import { LocationService } from '../../services/location.service';
 import { Router } from '@angular/router';
-import { ConditionsAndZip } from '../conditions-and-zip.type';
+import { ConditionsAndZip } from '../../conditions-and-zip.type';
 
 @Component({
-  selector: 'app-current-conditions',
-  templateUrl: './current-conditions.component.html',
-  styleUrls: ['./current-conditions.component.css'],
+  selector: 'app-current-conditions-page',
+  templateUrl: './current-conditions-page.component.html',
+  styleUrls: ['./current-conditions-page.component.css'],
 })
-export class CurrentConditionsComponent {
+export class CurrentConditionsPageComponent {
   private weatherService = inject(WeatherService);
   private router = inject(Router);
   protected locationService = inject(LocationService);

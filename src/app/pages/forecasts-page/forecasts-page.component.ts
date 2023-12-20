@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { WeatherService } from '../services/weather.service';
+import { WeatherService } from '../../services/weather.service';
 import { ActivatedRoute } from '@angular/router';
-import { Forecast } from './forecast.type';
+import { Forecast } from '../../models/forecast.type';
 
 @Component({
-  selector: 'app-forecasts-list',
-  templateUrl: './forecasts-list.component.html',
-  styleUrls: ['./forecasts-list.component.css'],
+  selector: 'app-forecasts-page',
+  templateUrl: './forecasts-page.component.html',
+  styleUrls: ['./forecasts-page.component.css'],
 })
-export class ForecastsListComponent {
+export class ForecastsPageComponent {
   zipcode: string;
   forecast: Forecast;
 
