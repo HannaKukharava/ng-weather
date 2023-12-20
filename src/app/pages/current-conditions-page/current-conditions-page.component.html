@@ -1,0 +1,4 @@
+<app-current-condition
+  [currentConditionsByZip]="weatherService.getCurrentConditions()"
+  (remove)="locationService.removeLocation($event)"
+></app-current-condition>

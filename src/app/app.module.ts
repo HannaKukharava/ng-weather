@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { ZipcodeEntryComponent } from './zipcode-entry/zipcode-entry.component';
 import { LocationService } from './services/location.service';
-import { ForecastsListComponent } from './forecasts-list/forecasts-list.component';
+import { ForecastsPageComponent } from './pages/forecasts-page/forecasts-page.component';
 import { WeatherService } from './services/weather.service';
-import { CurrentConditionsComponent } from './current-conditions/current-conditions.component';
-import { MainPageComponent } from './main-page/main-page.component';
+import { CurrentConditionsPageComponent } from './pages/current-conditions-page/current-conditions-page.component';
+import { MainPageComponent } from './pages/main-page/main-page.component';
 import { RouterModule } from '@angular/router';
 import { routing } from './app.routing';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -16,6 +16,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { CacheInterceptor } from './interceptors/cache.interceptor';
 import { CacheResolverService } from './services/cache-resolver.service';
+import { ForecastComponent } from './components/forecast/forecast.component';
+import { WeatherIconPipe } from './pipes/weather-icon.pipe';
+import { CurrentConditionComponent } from './components/current-condition/current-condition.component';
 
 export const interceptors = [
   {
@@ -29,8 +32,8 @@ export const interceptors = [
   declarations: [
     AppComponent,
     ZipcodeEntryComponent,
-    ForecastsListComponent,
-    CurrentConditionsComponent,
+    ForecastsPageComponent,
+    CurrentConditionsPageComponent,
     MainPageComponent,
   ],
   imports: [
@@ -40,6 +43,9 @@ export const interceptors = [
     RouterModule,
     routing,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+    ForecastComponent,
+    WeatherIconPipe,
+    CurrentConditionComponent,
   ],
   providers: [...interceptors, LocationService, WeatherService, CacheResolverService],
   bootstrap: [AppComponent],
