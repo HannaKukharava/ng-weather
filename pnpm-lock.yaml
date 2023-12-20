@@ -29,9 +29,6 @@ dependencies:
   '@angular/service-worker':
     specifier: 17.0.6
     version: 17.0.6(@angular/common@17.0.6)(@angular/core@17.0.6)
-  '@ngneat/until-destroy':
-    specifier: ^10.0.0
-    version: 10.0.0(@angular/core@17.0.6)(rxjs@6.5.4)
   body-parser:
     specifier: ^1.19.0
     version: 1.19.0
@@ -2329,18 +2326,6 @@ packages:
     dependencies:
       call-bind: 1.0.5
     dev: true
-
-  /@ngneat/until-destroy@10.0.0(@angular/core@17.0.6)(rxjs@6.5.4):
-    resolution:
-      { integrity: sha512-xXFAabQ4YVJ82LYxdgUlaKZyR3dSbxqG3woSyaclzxfCgWMEDweCcM/GGYbNiHJa0WwklI98RXHvca+UyCxpeg== }
-    peerDependencies:
-      '@angular/core': '>=13'
-      rxjs: ^6.4.0 || ^7.0.0
-    dependencies:
-      '@angular/core': 17.0.6(rxjs@6.5.4)(zone.js@0.14.2)
-      rxjs: 6.5.4
-      tslib: 2.6.2
-    dev: false
 
   /@ngtools/webpack@17.0.6(@angular/compiler-cli@17.0.6)(typescript@5.2.2)(webpack@5.89.0):
     resolution:

@@ -2,6 +2,7 @@ import { Component, ContentChildren, EventEmitter, Input, Output, QueryList } fr
 import { CommonModule } from '@angular/common';
 import { Tab } from '../../models/ui/tab.model';
 import { TabComponent } from './tab/tab.component';
+import { Position } from '../../models/position';
 
 @Component({
   selector: 'app-tabset',
@@ -32,13 +33,16 @@ export class TabsetComponent {
   }
 
   closeTab(tab: Tab) {
-    if (tab.active && !!this.getPreviousTab(tab.order)) {
-      this.selectTab(this.getPreviousTab(tab.order));
+    if (tab.active) {
+      const nextTab = this.getNextTab(tab.order, Position.PREVIOUS) || this.getNextTab(tab.order, Position.NEXT);
+      if (nextTab) {
+        this.selectTab(nextTab);
+      }
     }
     this.tabClosed.emit(tab.id);
   }
 
-  private getPreviousTab(order: number): TabComponent {
-    return this.tabs.find(item => item.order === order - 1);
+  private getNextTab(order: number, position: Position): TabComponent {
+    return this.tabs.find(item => item.order === order + position);
   }
 }

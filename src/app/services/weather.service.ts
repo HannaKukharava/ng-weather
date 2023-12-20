@@ -1,12 +1,11 @@
 import { Injectable, Signal, signal } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CurrentConditions } from '../models/current-conditions.type';
 import { ConditionsAndZip } from '../conditions-and-zip.type';
 import { Forecast } from '../models/forecast.type';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { distinctUntilChanged } from 'rxjs/operators';
 import { LocationService } from './location.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable()
 export class WeatherService {
@@ -15,7 +14,7 @@ export class WeatherService {
   private currentConditions = signal<ConditionsAndZip[]>([]);
 
   constructor(private http: HttpClient, private locationService: LocationService) {
-    this.initLocationChangeCheck();
+    this.checkLocationChange();
   }
 
   getCurrentConditions(): Signal<ConditionsAndZip[]> {
@@ -23,38 +22,34 @@ export class WeatherService {
   }
 
   getForecast(zipcode: string): Observable<Forecast> {
-    // Here we make a request to get the forecast data from the API. Note the use of backticks and an expression to insert the zipcode
     return this.http.get<Forecast>(
       `${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`
     );
   }
 
-  private initLocationChangeCheck() {
-    combineLatest([this.locationService.locations$, toObservable(this.currentConditions)])
-      .pipe(distinctUntilChanged((prev, curr) => prev[0].join(',') === curr[0].join(',')))
-      .subscribe(([zipcodes, conditions = []]) => {
-        const filteredConditions = this.removeCurrentConditions(zipcodes, conditions);
-        this.currentConditions.set(filteredConditions);
-        this.addMissingCurrentConditions(zipcodes, conditions);
-      });
-  }
-
-  private removeCurrentConditions(zipcodes: string[], conditions: ConditionsAndZip[]) {
-    return conditions.filter(condition => zipcodes.includes(condition.zip));
-  }
-
-  private addMissingCurrentConditions(zipcodes: string[], conditions: ConditionsAndZip[]): void {
-    const missingZipcodes = zipcodes.filter(zip => !conditions.some(condition => condition.zip === zip));
-    missingZipcodes.forEach(zip => {
-      this.getCurrentCondition(zip).subscribe(data =>
-        this.currentConditions.update(conditions => [...conditions, { zip, data }])
-      );
-    });
-  }
-
-  private getCurrentCondition(zipcode: string) {
+  fetchCurrentConditions(zipcode: string): Observable<CurrentConditions> {
     return this.http.get<CurrentConditions>(
       `${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`
     );
+  }
+
+  private checkLocationChange() {
+    this.locationService.locations$.pipe(takeUntilDestroyed()).subscribe(zipcodes => {
+      this.removeCurrentConditions(zipcodes);
+      this.addCurrentConditions(zipcodes);
+    });
+  }
+
+  private removeCurrentConditions(zipcodes: string[]) {
+    this.currentConditions.update(conditions => conditions.filter(condition => zipcodes.includes(condition.zip)));
+  }
+
+  private addCurrentConditions(zipcodes: string[]): void {
+    const missingZipcodes = zipcodes.filter(zip => !this.currentConditions().some(condition => condition.zip === zip));
+    missingZipcodes.forEach(zip => {
+      this.fetchCurrentConditions(zip).subscribe(data =>
+        this.currentConditions.update(conditions => [...conditions, { zip, data }])
+      );
+    });
   }
 }
