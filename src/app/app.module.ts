@@ -18,6 +18,7 @@ import { CacheInterceptor } from './interceptors/cache.interceptor';
 import { CacheResolverService } from './services/cache-resolver.service';
 import { ForecastComponent } from './components/forecast/forecast.component';
 import { WeatherIconPipe } from './pipes/weather-icon.pipe';
+import { CurrentConditionComponent } from './components/current-condition/current-condition.component';
 
 export const interceptors = [
   {
@@ -44,6 +45,7 @@ export const interceptors = [
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     ForecastComponent,
     WeatherIconPipe,
+    CurrentConditionComponent,
   ],
   providers: [...interceptors, LocationService, WeatherService, CacheResolverService],
   bootstrap: [AppComponent],

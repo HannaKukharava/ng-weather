@@ -10,11 +10,11 @@ import { ConditionsAndZip } from '../../conditions-and-zip.type';
   styleUrls: ['./current-conditions-page.component.css'],
 })
 export class CurrentConditionsPageComponent {
-  private weatherService = inject(WeatherService);
-  private router = inject(Router);
+  protected weatherService = inject(WeatherService);
   protected locationService = inject(LocationService);
-  protected currentConditionsByZip: Signal<ConditionsAndZip[]> = this.weatherService.getCurrentConditions();
+  private router = inject(Router);
 
+  //TODO move to component
   showForecast(zipcode: string) {
     this.router.navigate(['/forecast', zipcode]);
   }
