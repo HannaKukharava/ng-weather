@@ -15,7 +15,7 @@ import { TabComponent } from '../tabset/tab/tab.component';
 })
 export class CurrentConditionComponent {
   @Input() currentConditionsByZip: Signal<ConditionsAndZip[]>;
-  @Output() remove: EventEmitter<string> = new EventEmitter<string>();
+  @Output() remove = new EventEmitter<string>();
 
   activeTab = 0;
 }

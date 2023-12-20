@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChildren, EventEmitter, Input, Output, QueryList } from '@angular/core';
+import { Component, ContentChildren, EventEmitter, Input, Output, QueryList } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Tab } from '../../models/ui/tab.model';
 import { TabComponent } from './tab/tab.component';
@@ -13,15 +13,15 @@ import { TabComponent } from './tab/tab.component';
 export class TabsetComponent {
   @ContentChildren(TabComponent) set tabComponents(tabComponents: QueryList<TabComponent>) {
     this.tabs = tabComponents;
-    let activeTabs = tabComponents.filter(tab => tab.active);
-    if (activeTabs.length === 0 && tabComponents.first) {
+    let activeTab = tabComponents.find(tab => tab.active);
+    if (!activeTab && tabComponents.first) {
       this.selectTab(tabComponents.first);
     }
   }
 
-  @Input() closable: boolean = true;
-  @Output() tabChanged = new EventEmitter<number>();
-  @Output() tabClosed = new EventEmitter<number>();
+  @Input() closable = true;
+  @Output() tabChanged = new EventEmitter<string | number>();
+  @Output() tabClosed = new EventEmitter<string | number>();
 
   tabs: QueryList<TabComponent>;
 
@@ -32,6 +32,13 @@ export class TabsetComponent {
   }
 
   closeTab(tab: Tab) {
+    if (tab.active && !!this.getPreviousTab(tab.order)) {
+      this.selectTab(this.getPreviousTab(tab.order));
+    }
     this.tabClosed.emit(tab.id);
+  }
+
+  private getPreviousTab(order: number): TabComponent {
+    return this.tabs.find(item => item.order === order - 1);
   }
 }

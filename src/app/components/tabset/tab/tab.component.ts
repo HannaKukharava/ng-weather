@@ -9,7 +9,8 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./tab.component.css'],
 })
 export class TabComponent {
-  @Input() title: string = '';
-  @Input() id: number;
-  @Input() active: boolean = false;
+  @Input() title = '';
+  @Input() id: string | number;
+  @Input() active = false;
+  @Input() order?: number;
 }

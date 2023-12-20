@@ -1,9 +1,10 @@
 <app-tabset (tabChanged)="activeTab = $event" (tabClosed)="remove.emit($event)">
   <app-tab
-    *ngFor="let location of currentConditionsByZip(); index as id"
-    [id]="id"
+    *ngFor="let location of currentConditionsByZip(); index as i"
+    [id]="location.zip"
+    [order]="i"
     [title]="location.data.name + ' (' + location.zip + ')'"
-    [active]="activeTab === id"
+    [active]="activeTab === i"
   >
     <div class="well flex">
       <div>

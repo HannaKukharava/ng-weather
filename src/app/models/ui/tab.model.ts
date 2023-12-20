@@ -1,5 +1,6 @@
 export interface Tab {
-  id: number;
+  id: string | number;
   title: string;
   active: boolean;
+  order?: number;
 }
