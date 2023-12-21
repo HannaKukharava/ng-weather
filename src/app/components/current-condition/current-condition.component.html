@@ -6,7 +6,7 @@
     [title]="location.data.name + ' (' + location.zip + ')'"
     [active]="activeTab === i"
   >
-    <div class="well flex">
+    <div class="well flex" [routerLink]="['/forecast', location.zip]">
       <div>
         <h3>{{ location.data.name }} ({{ location.zip }})</h3>
         <h4>Current conditions: {{ location.data.weather[0].main }}</h4>
