@@ -1,0 +1,29 @@
+<div>
+  <h3 class="title">Cache duration settings</h3>
+  <form [formGroup]="form">
+    <div class="row-no-gutters">
+      <div class="col-xs-6">
+        <div class="form-group">
+          <input id="duration" type="number" name="duration" class="form-control" formControlName="time" />
+          <ng-container *ngIf="form.controls.time.dirty">
+            <div *ngIf="form.controls.time.errors?.min as errors" class="text-danger error">
+              The minimal number allowed is {{ errors.min }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="form-group">
+          <select name="unit" id="unit" class="form-control" formControlName="unit">
+            <option [value]="TimeUnit.SECONDS">Seconds</option>
+            <option [value]="TimeUnit.MINUTES">Minutes</option>
+            <option [value]="TimeUnit.HOURS">Hours</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <button class="btn btn-success" [disabled]="form.invalid" (click)="submit()">Save</button>
+      </div>
+    </div>
+  </form>
+</div>

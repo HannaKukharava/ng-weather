@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { ZipcodeEntryComponent } from './zipcode-entry/zipcode-entry.component';
+import { ZipcodeEntryComponent } from './components/zipcode-entry/zipcode-entry.component';
 import { LocationService } from './services/location.service';
 import { ForecastsPageComponent } from './pages/forecasts-page/forecasts-page.component';
 import { WeatherService } from './services/weather.service';
@@ -19,6 +19,8 @@ import { CacheResolverService } from './services/cache-resolver.service';
 import { ForecastComponent } from './components/forecast/forecast.component';
 import { WeatherIconPipe } from './pipes/weather-icon.pipe';
 import { CurrentConditionComponent } from './components/current-condition/current-condition.component';
+import { CacheSettingsFormComponent } from './components/cache-settings-form/cache-settings-form.component';
+import { CacheSettingsComponent } from './containers/cache-settings/cache-settings.component';
 
 export const interceptors = [
   {
@@ -46,6 +48,8 @@ export const interceptors = [
     ForecastComponent,
     WeatherIconPipe,
     CurrentConditionComponent,
+    CacheSettingsFormComponent,
+    CacheSettingsComponent,
   ],
   providers: [...interceptors, LocationService, WeatherService, CacheResolverService],
   bootstrap: [AppComponent],

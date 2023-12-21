@@ -1,0 +1,12 @@
+.error {
+  padding-top: 5px;
+  font-size: 12px;
+}
+
+.title {
+  margin: 15px 0;
+}
+
+[class*='col-'] {
+  padding-right: 10px;
+}
