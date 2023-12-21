@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@angular/animations':
+    specifier: ^17.0.7
+    version: 17.0.7(@angular/core@17.0.6)
   '@angular/common':
     specifier: ^17.0.6
     version: 17.0.6(@angular/core@17.0.6)(rxjs@6.5.4)
@@ -19,7 +22,7 @@ dependencies:
     version: 17.0.6(@angular/common@17.0.6)(@angular/core@17.0.6)(@angular/platform-browser@17.0.6)(rxjs@6.5.4)
   '@angular/platform-browser':
     specifier: ^17.0.6
-    version: 17.0.6(@angular/common@17.0.6)(@angular/core@17.0.6)
+    version: 17.0.6(@angular/animations@17.0.7)(@angular/common@17.0.6)(@angular/core@17.0.6)
   '@angular/platform-browser-dynamic':
     specifier: ^17.0.6
     version: 17.0.6(@angular/common@17.0.6)(@angular/compiler@17.0.6)(@angular/core@17.0.6)(@angular/platform-browser@17.0.6)
@@ -44,6 +47,9 @@ dependencies:
   express:
     specifier: ^4.17.3
     version: 4.17.3
+  ngx-toastr:
+    specifier: ^18.0.0
+    version: 18.0.0(@angular/common@17.0.6)(@angular/core@17.0.6)(@angular/platform-browser@17.0.6)
   rxjs:
     specifier: 6.5.4
     version: 6.5.4
@@ -316,6 +322,17 @@ packages:
       - chokidar
     dev: true
 
+  /@angular/animations@17.0.7(@angular/core@17.0.6):
+    resolution:
+      { integrity: sha512-IjZjPGMxvi2a9o7fzjwNO44FvhTZlVSgcPtqM6Glq0+WVeQcnZxf1Onj68M/FGx2AunS8elRbrgPxTexVeSo7A== }
+    engines: { node: ^18.13.0 || >=20.9.0 }
+    peerDependencies:
+      '@angular/core': 17.0.7
+    dependencies:
+      '@angular/core': 17.0.6(rxjs@6.5.4)(zone.js@0.14.2)
+      tslib: 2.6.2
+    dev: false
+
   /@angular/cli@17.0.6:
     resolution:
       { integrity: sha512-BLA2wDeqZManC/7MI6WvRRV+VhrwjxxB7FawLyp4xYlo0CTSOFOfeKPVRMLEnA/Ou4R5d47B+BqJTlep62pHwg== }
@@ -418,7 +435,7 @@ packages:
     dependencies:
       '@angular/common': 17.0.6(@angular/core@17.0.6)(rxjs@6.5.4)
       '@angular/core': 17.0.6(rxjs@6.5.4)(zone.js@0.14.2)
-      '@angular/platform-browser': 17.0.6(@angular/common@17.0.6)(@angular/core@17.0.6)
+      '@angular/platform-browser': 17.0.6(@angular/animations@17.0.7)(@angular/common@17.0.6)(@angular/core@17.0.6)
       rxjs: 6.5.4
       tslib: 2.6.2
     dev: false
@@ -436,11 +453,11 @@ packages:
       '@angular/common': 17.0.6(@angular/core@17.0.6)(rxjs@6.5.4)
       '@angular/compiler': 17.0.6(@angular/core@17.0.6)
       '@angular/core': 17.0.6(rxjs@6.5.4)(zone.js@0.14.2)
-      '@angular/platform-browser': 17.0.6(@angular/common@17.0.6)(@angular/core@17.0.6)
+      '@angular/platform-browser': 17.0.6(@angular/animations@17.0.7)(@angular/common@17.0.6)(@angular/core@17.0.6)
       tslib: 2.6.2
     dev: false
 
-  /@angular/platform-browser@17.0.6(@angular/common@17.0.6)(@angular/core@17.0.6):
+  /@angular/platform-browser@17.0.6(@angular/animations@17.0.7)(@angular/common@17.0.6)(@angular/core@17.0.6):
     resolution:
       { integrity: sha512-nBhWH1MKT2WswgRNIoMnmNAt0n5/fG59BanJtodW71//Aj5aIE+BuVoFgK3wmO8IMoeP4i4GXRInBXs6lUMOJw== }
     engines: { node: ^18.13.0 || >=20.9.0 }
@@ -452,6 +469,7 @@ packages:
       '@angular/animations':
         optional: true
     dependencies:
+      '@angular/animations': 17.0.7(@angular/core@17.0.6)
       '@angular/common': 17.0.6(@angular/core@17.0.6)(rxjs@6.5.4)
       '@angular/core': 17.0.6(rxjs@6.5.4)(zone.js@0.14.2)
       tslib: 2.6.2
@@ -469,7 +487,7 @@ packages:
     dependencies:
       '@angular/common': 17.0.6(@angular/core@17.0.6)(rxjs@6.5.4)
       '@angular/core': 17.0.6(rxjs@6.5.4)(zone.js@0.14.2)
-      '@angular/platform-browser': 17.0.6(@angular/common@17.0.6)(@angular/core@17.0.6)
+      '@angular/platform-browser': 17.0.6(@angular/animations@17.0.7)(@angular/common@17.0.6)(@angular/core@17.0.6)
       rxjs: 6.5.4
       tslib: 2.6.2
     dev: false
@@ -6707,6 +6725,20 @@ packages:
     resolution:
       { integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw== }
     dev: true
+
+  /ngx-toastr@18.0.0(@angular/common@17.0.6)(@angular/core@17.0.6)(@angular/platform-browser@17.0.6):
+    resolution:
+      { integrity: sha512-jZ3rOG6kygl8ittY8OltIMSo47P1VStuS01igm3MZXK6InJwHVvxU7wDHI/HGMlXSyNvWncyOuFHnnMEAifsew== }
+    peerDependencies:
+      '@angular/common': '>=16.0.0-0'
+      '@angular/core': '>=16.0.0-0'
+      '@angular/platform-browser': '>=16.0.0-0'
+    dependencies:
+      '@angular/common': 17.0.6(@angular/core@17.0.6)(rxjs@6.5.4)
+      '@angular/core': 17.0.6(rxjs@6.5.4)(zone.js@0.14.2)
+      '@angular/platform-browser': 17.0.6(@angular/animations@17.0.7)(@angular/common@17.0.6)(@angular/core@17.0.6)
+      tslib: 2.6.2
+    dev: false
 
   /nice-napi@1.0.2:
     resolution:

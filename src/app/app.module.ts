@@ -21,11 +21,19 @@ import { WeatherIconPipe } from './pipes/weather-icon.pipe';
 import { CurrentConditionComponent } from './components/current-condition/current-condition.component';
 import { CacheSettingsFormComponent } from './components/cache-settings-form/cache-settings-form.component';
 import { CacheSettingsComponent } from './containers/cache-settings/cache-settings.component';
+import { ToastrModule } from 'ngx-toastr';
+import { ErrorMessageInterceptor } from './interceptors/error-message.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-export const interceptors = [
+const interceptors = [
   {
     provide: HTTP_INTERCEPTORS,
     useClass: CacheInterceptor,
+    multi: true,
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ErrorMessageInterceptor,
     multi: true,
   },
 ];
@@ -44,6 +52,13 @@ export const interceptors = [
     HttpClientModule,
     RouterModule,
     routing,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      progressBar: true,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
+    BrowserAnimationsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
     ForecastComponent,
     WeatherIconPipe,

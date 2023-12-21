@@ -1,11 +1,12 @@
 import { Injectable, Signal, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { CurrentConditions } from '../models/current-conditions.type';
 import { ConditionsAndZip } from '../conditions-and-zip.type';
 import { Forecast } from '../models/forecast.type';
 import { LocationService } from './location.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, filter } from 'rxjs/operators';
 
 @Injectable()
 export class WeatherService {
@@ -33,6 +34,11 @@ export class WeatherService {
     );
   }
 
+  private removeLocation(zipcode: string) {
+    this.locationService.removeLocation(zipcode);
+    return of();
+  }
+
   private checkLocationChange() {
     this.locationService.locations$.pipe(takeUntilDestroyed()).subscribe(zipcodes => {
       this.removeCurrentConditions(zipcodes);
@@ -47,9 +53,14 @@ export class WeatherService {
   private addCurrentConditions(zipcodes: string[]): void {
     const missingZipcodes = zipcodes.filter(zip => !this.currentConditions().some(condition => condition.zip === zip));
     missingZipcodes.forEach(zip => {
-      this.fetchCurrentConditions(zip).subscribe(data =>
-        this.currentConditions.update(conditions => [...conditions, { zip, data }])
-      );
+      this.fetchCurrentConditions(zip)
+        .pipe(
+          catchError(() => this.removeLocation(zip)),
+          filter(Boolean)
+        )
+        .subscribe((data: CurrentConditions) =>
+          this.currentConditions.update(conditions => [...conditions, { zip, data }])
+        );
     });
   }
 }
