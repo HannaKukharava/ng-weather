@@ -5,15 +5,16 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --base-href https://hannakukharava.github.io/ng-weather/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "deploy": "ngh --dir dist/ng-weather --no-silent --repo=https://github.com/hannakukharava/ng-weather.git"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^17.0.7",
+    "@angular/animations": "^17.0.6",
     "@angular/common": "^17.0.6",
     "@angular/compiler": "^17.0.6",
     "@angular/core": "^17.0.6",
@@ -22,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^17.0.6",
     "@angular/router": "^17.0.6",
     "@angular/service-worker": "17.0.6",
+    "angular-cli-ghpages": "^1.0.7",
     "body-parser": "^1.19.0",
     "bootstrap": "^3.4.1",
     "core-js": "^2.6.9",
