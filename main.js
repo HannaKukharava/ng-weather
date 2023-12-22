@@ -230,6 +230,7 @@ CacheSettingsFormComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODU
   standalone: true,
   imports: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.ReactiveFormsModule],
   template: _cache_settings_form_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectionStrategy.OnPush,
   styles: [(_cache_settings_form_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], CacheSettingsFormComponent);
 
@@ -274,7 +275,6 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 let CurrentConditionComponent = class CurrentConditionComponent {
   constructor() {
     this.remove = new _angular_core__WEBPACK_IMPORTED_MODULE_5__.EventEmitter();
-    this.activeTab = 0;
   }
   static #_ = this.propDecorators = {
     currentConditionsByZip: [{
@@ -290,6 +290,7 @@ CurrentConditionComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODUL
   standalone: true,
   imports: [_angular_common__WEBPACK_IMPORTED_MODULE_6__.CommonModule, _pipes_weather_icon_pipe__WEBPACK_IMPORTED_MODULE_2__.WeatherIconPipe, _tabset_tabset_component__WEBPACK_IMPORTED_MODULE_3__.TabsetComponent, _angular_router__WEBPACK_IMPORTED_MODULE_7__.RouterLink, _tabset_tab_tab_component__WEBPACK_IMPORTED_MODULE_4__.TabComponent],
   template: _current_condition_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_5__.ChangeDetectionStrategy.OnPush,
   styles: [(_current_condition_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], CurrentConditionComponent);
 
@@ -340,6 +341,7 @@ ForecastComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Co
   standalone: true,
   imports: [_angular_common__WEBPACK_IMPORTED_MODULE_4__.CommonModule, _pipes_weather_icon_pipe__WEBPACK_IMPORTED_MODULE_2__.WeatherIconPipe],
   template: _forecast_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_3__.ChangeDetectionStrategy.OnPush,
   styles: [(_forecast_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], ForecastComponent);
 
@@ -376,16 +378,20 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 let TabComponent = class TabComponent {
   constructor() {
     this.title = '';
-    this.active = false;
+    this.active = (0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.signal)(false);
+  }
+  set order(order) {
+    this._order = order;
+    this.active.set(order === 0);
+  }
+  get order() {
+    return this._order;
   }
   static #_ = this.propDecorators = {
     title: [{
       type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
     }],
     id: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
-    }],
-    active: [{
       type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
     }],
     order: [{
@@ -398,6 +404,7 @@ TabComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Compone
   standalone: true,
   imports: [_angular_common__WEBPACK_IMPORTED_MODULE_3__.CommonModule],
   template: _tab_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_2__.ChangeDetectionStrategy.OnPush,
   styles: [(_tab_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], TabComponent);
 
@@ -419,9 +426,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tabset_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabset.component.css?ngResource */ 9671);
 /* harmony import */ var _tabset_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_tabset_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 1126);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common */ 6140);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common */ 6140);
 /* harmony import */ var _tab_tab_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tab/tab.component */ 8640);
 /* harmony import */ var _models_position__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../models/position */ 5743);
+/* harmony import */ var _ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngneat/until-destroy */ 5774);
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
     r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -435,22 +443,20 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 
 
 
+
 let TabsetComponent = class TabsetComponent {
   constructor() {
     this.closable = true;
     this.tabChanged = new _angular_core__WEBPACK_IMPORTED_MODULE_4__.EventEmitter();
     this.tabClosed = new _angular_core__WEBPACK_IMPORTED_MODULE_4__.EventEmitter();
+    this.cd = (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.inject)(_angular_core__WEBPACK_IMPORTED_MODULE_4__.ChangeDetectorRef);
   }
-  set tabComponents(tabComponents) {
-    this.tabs = tabComponents;
-    let activeTab = tabComponents.find(tab => tab.active);
-    if (!activeTab && tabComponents.first) {
-      this.selectTab(tabComponents.first);
-    }
+  ngAfterContentInit() {
+    this.tabs?.changes.pipe((0,_ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_5__.untilDestroyed)(this)).subscribe(() => this.cd.markForCheck());
   }
   selectTab(tab) {
-    this.tabs.toArray().forEach(tab => tab.active = false);
-    tab.active = true;
+    this.tabs.toArray().forEach(tab => tab.active.set(false));
+    tab.active.set(true);
     this.tabChanged.emit(tab.id);
   }
   closeTab(tab) {
@@ -466,7 +472,7 @@ let TabsetComponent = class TabsetComponent {
     return this.tabs.find(item => item.order === order + position);
   }
   static #_ = this.propDecorators = {
-    tabComponents: [{
+    tabs: [{
       type: _angular_core__WEBPACK_IMPORTED_MODULE_4__.ContentChildren,
       args: [_tab_tab_component__WEBPACK_IMPORTED_MODULE_2__.TabComponent]
     }],
@@ -481,11 +487,12 @@ let TabsetComponent = class TabsetComponent {
     }]
   };
 };
-TabsetComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
+TabsetComponent = __decorate([(0,_ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_5__.UntilDestroy)(), (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
   selector: 'app-tabset',
   standalone: true,
-  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_5__.CommonModule],
+  imports: [_angular_common__WEBPACK_IMPORTED_MODULE_6__.CommonModule],
   template: _tabset_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_4__.ChangeDetectionStrategy.OnPush,
   styles: [(_tabset_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], TabsetComponent);
 
@@ -529,7 +536,8 @@ let ZipcodeEntryComponent = class ZipcodeEntryComponent {
 };
 ZipcodeEntryComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Component)({
   selector: 'app-zipcode-entry',
-  template: _zipcode_entry_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__
+  template: _zipcode_entry_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  changeDetection: _angular_core__WEBPACK_IMPORTED_MODULE_2__.ChangeDetectionStrategy.OnPush
 })], ZipcodeEntryComponent);
 
 
@@ -796,8 +804,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _forecasts_page_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./forecasts-page.component.html?ngResource */ 2099);
 /* harmony import */ var _forecasts_page_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./forecasts-page.component.css?ngResource */ 9563);
 /* harmony import */ var _forecasts_page_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_forecasts_page_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 1126);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 1126);
 /* harmony import */ var _services_weather_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/weather.service */ 5527);
+/* harmony import */ var _ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngneat/until-destroy */ 5774);
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
     r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -809,9 +818,10 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 
 
 
+
 let ForecastsPageComponent = class ForecastsPageComponent {
   set zipcode(zipcode) {
-    this.weatherService.getForecast(zipcode).subscribe(data => this.forecast = data);
+    this.weatherService.getForecast(zipcode).pipe((0,_ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_3__.untilDestroyed)(this)).subscribe(data => this.forecast = data);
   }
   constructor(weatherService) {
     this.weatherService = weatherService;
@@ -821,12 +831,12 @@ let ForecastsPageComponent = class ForecastsPageComponent {
   }];
   static #_2 = this.propDecorators = {
     zipcode: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input,
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_4__.Input,
       args: ['zipcode']
     }]
   };
 };
-ForecastsPageComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
+ForecastsPageComponent = __decorate([(0,_ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_3__.UntilDestroy)(), (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
   selector: 'app-forecasts-page',
   template: _forecasts_page_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
   styles: [(_forecasts_page_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
@@ -1067,9 +1077,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 2425);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/common/http */ 4252);
 /* harmony import */ var _location_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./location.service */ 1354);
-/* harmony import */ var _angular_core_rxjs_interop__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core/rxjs-interop */ 3390);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ 3118);
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ 5004);
+/* harmony import */ var _ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngneat/until-destroy */ 5774);
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
     r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -1108,7 +1118,7 @@ let WeatherService = class WeatherService {
     return (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.of)();
   }
   checkLocationChange() {
-    this.locationService.locations$.pipe((0,_angular_core_rxjs_interop__WEBPACK_IMPORTED_MODULE_3__.takeUntilDestroyed)()).subscribe(zipcodes => {
+    this.locationService.locations$.pipe((0,_ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_3__.untilDestroyed)(this)).subscribe(zipcodes => {
       this.removeCurrentConditions(zipcodes);
       this.addCurrentConditions(zipcodes);
     });
@@ -1119,7 +1129,7 @@ let WeatherService = class WeatherService {
   addCurrentConditions(zipcodes) {
     const missingZipcodes = zipcodes.filter(zip => !this.currentConditions().some(condition => condition.zip === zip));
     missingZipcodes.forEach(zip => {
-      this.fetchCurrentConditions(zip).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_4__.catchError)(() => this.removeLocation(zip)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.filter)(Boolean)).subscribe(data => this.currentConditions.update(conditions => [...conditions, {
+      this.fetchCurrentConditions(zip).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_4__.catchError)(() => this.removeLocation(zip)), (0,rxjs_operators__WEBPACK_IMPORTED_MODULE_5__.filter)(Boolean), (0,_ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_3__.untilDestroyed)(this)).subscribe(data => this.currentConditions.update(conditions => [...conditions, {
         zip,
         data
       }]));
@@ -1131,7 +1141,7 @@ let WeatherService = class WeatherService {
     type: _location_service__WEBPACK_IMPORTED_MODULE_0__.LocationService
   }];
 };
-WeatherService = WeatherService_1 = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.Injectable)()], WeatherService);
+WeatherService = WeatherService_1 = __decorate([(0,_ngneat_until_destroy__WEBPACK_IMPORTED_MODULE_3__.UntilDestroy)(), (0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.Injectable)()], WeatherService);
 
 
 /***/ }),
@@ -1442,7 +1452,7 @@ module.exports = "<div>\r\n  <h3 class=\"title\">Cache duration settings</h3>\r\
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<app-tabset (tabChanged)=\"activeTab = $event\" (tabClosed)=\"remove.emit($event)\">\r\n  <app-tab\r\n    *ngFor=\"let location of currentConditionsByZip(); index as i\"\r\n    [id]=\"location.zip\"\r\n    [order]=\"i\"\r\n    [title]=\"location.data.name + ' (' + location.zip + ')'\"\r\n    [active]=\"activeTab === i\"\r\n  >\r\n    <div class=\"well flex\" [routerLink]=\"['/forecast', location.zip]\">\r\n      <div>\r\n        <h3>{{ location.data.name }} ({{ location.zip }})</h3>\r\n        <h4>Current conditions: {{ location.data.weather[0].main }}</h4>\r\n        <h4>Temperatures today:</h4>\r\n        <p>\r\n          Current {{ location.data.main.temp | number : '.0-0' }} - Max\r\n          {{ location.data.main.temp_max | number : '.0-0' }} - Min {{ location.data.main.temp_min | number : '.0-0' }}\r\n        </p>\r\n        <p>\r\n          <a [routerLink]=\"['/forecast', location.zip]\">Show 5-day forecast for {{ location.data.name }}</a>\r\n        </p>\r\n      </div>\r\n      <div>\r\n        <img [src]=\"location.data.weather[0].id | weatherIcon\" alt=\"Weather image\" />\r\n      </div>\r\n    </div>\r\n  </app-tab>\r\n</app-tabset>\r\n";
+module.exports = "<app-tabset (tabClosed)=\"remove.emit($event)\">\n  <app-tab\n    *ngFor=\"let location of currentConditionsByZip(); index as i\"\n    [id]=\"location.zip\"\n    [order]=\"i\"\n    [title]=\"location.data.name + ' (' + location.zip + ')'\"\n  >\n    <div class=\"well flex\" [routerLink]=\"['/forecast', location.zip]\">\n      <div>\n        <h3>{{ location.data.name }} ({{ location.zip }})</h3>\n        <h4>Current conditions: {{ location.data.weather[0].main }}</h4>\n        <h4>Temperatures today:</h4>\n        <p>\n          Current {{ location.data.main.temp | number : '.0-0' }} - Max\n          {{ location.data.main.temp_max | number : '.0-0' }} - Min {{ location.data.main.temp_min | number : '.0-0' }}\n        </p>\n        <p>\n          <a [routerLink]=\"['/forecast', location.zip]\">Show 5-day forecast for {{ location.data.name }}</a>\n        </p>\n      </div>\n      <div>\n        <img [src]=\"location.data.weather[0].id | weatherIcon\" alt=\"Weather image\" />\n      </div>\n    </div>\n  </app-tab>\n</app-tabset>\n";
 
 /***/ }),
 
@@ -1464,7 +1474,7 @@ module.exports = "<div>\r\n  <div class=\"panel panel-default\">\r\n    <div cla
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div *ngIf=\"active\" class=\"tab-pane\">\r\n  <ng-content></ng-content>\r\n</div>\r\n";
+module.exports = "<div *ngIf=\"active()\" class=\"tab-pane\">\n  <ng-content></ng-content>\n</div>\n";
 
 /***/ }),
 
@@ -1475,7 +1485,7 @@ module.exports = "<div *ngIf=\"active\" class=\"tab-pane\">\r\n  <ng-content></n
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<ul *ngIf=\"tabs.length\" class=\"nav nav-tabs\">\r\n  <li *ngFor=\"let tab of tabs\" [class.active]=\"tab.active\" (click)=\"selectTab(tab)\">\r\n    <a href=\"#\">\r\n      {{ tab.title }}\r\n      <span *ngIf=\"closable\" class=\"close-icon\" (click)=\"closeTab(tab)\"> &times; </span>\r\n    </a>\r\n  </li>\r\n</ul>\r\n<div class=\"tab-content\">\r\n  <ng-content></ng-content>\r\n</div>\r\n";
+module.exports = "<ul *ngIf=\"tabs.length\" class=\"nav nav-tabs\">\n  <li *ngFor=\"let tab of tabs\" [class.active]=\"tab.active()\" (click)=\"selectTab(tab)\">\n    <a href=\"#\">\n      {{ tab.title }}\n      <span *ngIf=\"closable\" class=\"close-icon\" (click)=\"closeTab(tab)\"> &times; </span>\n    </a>\n  </li>\n</ul>\n<div class=\"tab-content\">\n  <ng-content></ng-content>\n</div>\n";
 
 /***/ }),
 
