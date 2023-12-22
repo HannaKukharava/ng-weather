@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { WeatherService } from '../../services/weather.service';
 import { LocationService } from '../../services/location.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-current-conditions-page',

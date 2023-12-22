@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Forecast } from '../../models/forecast.type';
 import { WeatherIconPipe } from '../../pipes/weather-icon.pipe';
@@ -9,6 +9,7 @@ import { WeatherIconPipe } from '../../pipes/weather-icon.pipe';
   imports: [CommonModule, WeatherIconPipe],
   templateUrl: './forecast.component.html',
   styleUrls: ['./forecast.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForecastComponent {
   @Input({ required: true }) forecast: Forecast;

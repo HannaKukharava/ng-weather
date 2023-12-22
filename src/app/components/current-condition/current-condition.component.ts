@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, Signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeatherIconPipe } from '../../pipes/weather-icon.pipe';
 import { TabsetComponent } from '../tabset/tabset.component';
@@ -12,10 +12,9 @@ import { TabComponent } from '../tabset/tab/tab.component';
   imports: [CommonModule, WeatherIconPipe, TabsetComponent, RouterLink, TabComponent],
   templateUrl: './current-condition.component.html',
   styleUrls: ['./current-condition.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CurrentConditionComponent {
   @Input() currentConditionsByZip: Signal<ConditionsAndZip[]>;
   @Output() remove = new EventEmitter<string>();
-
-  activeTab = 0;
 }

@@ -5,9 +5,10 @@ import { CurrentConditions } from '../models/current-conditions.type';
 import { ConditionsAndZip } from '../conditions-and-zip.type';
 import { Forecast } from '../models/forecast.type';
 import { LocationService } from './location.service';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, filter } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Injectable()
 export class WeatherService {
   static URL = 'https://api.openweathermap.org/data/2.5';
@@ -40,7 +41,7 @@ export class WeatherService {
   }
 
   private checkLocationChange() {
-    this.locationService.locations$.pipe(takeUntilDestroyed()).subscribe(zipcodes => {
+    this.locationService.locations$.pipe(untilDestroyed(this)).subscribe(zipcodes => {
       this.removeCurrentConditions(zipcodes);
       this.addCurrentConditions(zipcodes);
     });
@@ -56,7 +57,8 @@ export class WeatherService {
       this.fetchCurrentConditions(zip)
         .pipe(
           catchError(() => this.removeLocation(zip)),
-          filter(Boolean)
+          filter(Boolean),
+          untilDestroyed(this)
         )
         .subscribe((data: CurrentConditions) =>
           this.currentConditions.update(conditions => [...conditions, { zip, data }])

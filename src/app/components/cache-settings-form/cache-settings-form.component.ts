@@ -1,15 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Forecast } from '../../models/forecast.type';
-import { WeatherIconPipe } from '../../pipes/weather-icon.pipe';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Duration, TimeUnit } from '../../models/duration.model';
 
 @Component({
@@ -18,6 +9,7 @@ import { Duration, TimeUnit } from '../../models/duration.model';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './cache-settings-form.component.html',
   styleUrls: ['./cache-settings-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CacheSettingsFormComponent {
   @Input() set duration(duration: Duration) {

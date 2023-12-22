@@ -1,16 +1,6 @@
-import { Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Forecast } from '../../models/forecast.type';
-import { WeatherIconPipe } from '../../pipes/weather-icon.pipe';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { Duration, TimeUnit } from '../../models/duration.model';
+import { Duration } from '../../models/duration.model';
 import { CacheSettingsFormComponent } from '../../components/cache-settings-form/cache-settings-form.component';
 import { CacheResolverService } from '../../services/cache-resolver.service';
 
