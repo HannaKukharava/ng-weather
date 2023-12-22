@@ -1,10 +1,9 @@
-<app-tabset (tabChanged)="activeTab = $event" (tabClosed)="remove.emit($event)">
+<app-tabset (tabClosed)="remove.emit($event)">
   <app-tab
     *ngFor="let location of currentConditionsByZip(); index as i"
     [id]="location.zip"
     [order]="i"
     [title]="location.data.name + ' (' + location.zip + ')'"
-    [active]="activeTab === i"
   >
     <div class="well flex" [routerLink]="['/forecast', location.zip]">
       <div>

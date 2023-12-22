@@ -1,5 +1,5 @@
 <ul *ngIf="tabs.length" class="nav nav-tabs">
-  <li *ngFor="let tab of tabs" [class.active]="tab.active" (click)="selectTab(tab)">
+  <li *ngFor="let tab of tabs" [class.active]="tab.active()" (click)="selectTab(tab)">
     <a href="#">
       {{ tab.title }}
       <span *ngIf="closable" class="close-icon" (click)="closeTab(tab)"> &times; </span>
